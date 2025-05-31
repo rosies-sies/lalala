@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chatbot + Video</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; font-family: Arial, sans-serif; display: flex; flex-direction: column; }
+    .container { display: flex; flex-direction: row; height: 100vh; }
+    #videoWrapper, #chatWrapper { flex: 1; overflow: hidden; }
+    #videoWrapper {
+      display: flex; align-items: center; justify-content: center; background: black;
+    }
+    #chatWrapper {
+      display: flex; flex-direction: column; border-left: 1px solid #ccc;
+    }
+    #chat { flex: 1; padding: 10px; overflow-y: auto; }
+    #inputArea {
+      display: flex; border-top: 1px solid #ccc;
+    }
+    #userInput {
+      flex: 1; padding: 10px; border: none; font-size: 1em;
+    }
+    #sendBtn {
+      padding: 10px 20px; border: none; background-color: #007bff; color: white; cursor: pointer;
+    }
+    @media (max-width: 768px) {
+      .container { flex-direction: column; }
+      #videoWrapper, #chatWrapper { height: 50vh; }
+      #chatWrapper {
+        border-left: none; border-top: 1px solid #ccc;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="videoWrapper">
+      <video id="myVideo" style="width: 100%; height: 100%; object-fit: cover;" muted playsinline loop>
+        <source src="botvideo.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+    </div>
+    <div id="chatWrapper">
+      <div id="chat"></div>
+      <div id="inputArea">
+        <input type="text" id="userInput" placeholder="Ketik pesanmu..." />
+        <button id="sendBtn">Kirim</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    const chat = document.getElementById("chat");
+    const userInput = document.getElementById("userInput");
+    const sendBtn = document.getElementById("sendBtn");
+    const video = document.getElementById("myVideo");
+
+    sendBtn.onclick = () => {
+      const input = userInput.value.trim();
+      if (!input) return;
+      appendMessage("Kamu", input);
+      userInput.value = "";
+
+      // Play video saat kirim pesan
+      video.play();
+
+      // Simulasi balasan chatbot
+      setTimeout(() => {
+        const reply = "Ini adalah respon simulasi. Backend ChatGPT belum tersambung.";
+        appendMessage("Bot", reply);
+      }, 1000);
+    };
+
+    function appendMessage(sender, text) {
+      const div = document.createElement("div");
+      div.textContent = `${sender}: ${text}`;
+      chat.appendChild(div);
+      chat.scrollTop = chat.scrollHeight;
+    }
+  </script>
+</body>
+</html>
